@@ -15,7 +15,7 @@ class WoofService
     }
 
 
-    public function intake()
+    public function intake(): int   
     {
         $number = rand(-10, 3);
         if ($number > 0) {
@@ -31,7 +31,7 @@ class WoofService
         }
     }
 
-    public function generateNewDog()
+    public function generateNewDog(): void
     {
         Dog::create([
             'name' => Name::inRandomOrder()->first()->name,
@@ -39,19 +39,19 @@ class WoofService
         ]);
     }
 
-    public function onDeck()
+    public function onDeck(): array
     {
         return Dog::where('state', 'ON-DECK')
             ->orderBy('created_at', 'DESC')
             ->get();
     }
 
-    public function euthanize($id)
+    public function euthanize($id): void
     {
         Dog::find($id)->update(['state' => 'EUTHANIZED']);
     }
 
-    public function getDog($id)
+    public function getDog($id): Dog
     {
         return Dog::find($id);
     }
