@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WoofController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WoofController::class, 'index']);
+Route::get('/registered', [WoofController::class, 'registeredInShelter']);
+Route::get('/on-deck', [WoofController::class, 'onDeck']);
+Route::get('/intake', [WoofController::class, 'intake']);
+Route::get('/euthanize/{id}', [WoofController::class, 'euthanize']);
+Route::get('/on-board/{id}', [WoofController::class, 'onBoardForm']);
+

@@ -1,0 +1,60 @@
+services:
+
+    #######################################################
+    ### CRUDDY APP
+    #######################################################
+    cruddy:
+        image: webdevops/php-nginx-dev:8.2
+        container_name: cruddy
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        working_dir: /app
+        volumes:
+            - ../:/app
+            - ~/.ssh:/root/.ssh:ro
+        ports:
+            - 8080:80
+        networks:
+            - cruddy-network
+
+    #######################################################
+    ### MYSQL
+    #######################################################
+    cruddydb:
+        container_name: cruddydb
+        image: mysql:8
+        restart: unless-stopped
+        environment:
+            - PUID=1000
+            - PGID=100
+            - TZ=America/Chicago
+            - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+        volumes:
+            - ./.data/mysql:/var/lib/mysql
+            - ./conf/mysql.cnf:/etc/mysql/conf.d/my.cnf
+        ports:
+            - "3306:3306"
+        networks:
+            - cruddy-network
+
+    #######################################################
+    ### ADMINER
+    #######################################################
+    cruddyminer:
+        image: adminer
+        container_name: cruddyminer
+        restart: unless-stopped
+        environment:
+            - ADMINER_DEFAULT_SERVER=cruddydb
+        ports:
+            - 8081:8080
+        networks:
+            - cruddy-network
+
+networks:
+    cruddy-network:
+        driver: bridge
