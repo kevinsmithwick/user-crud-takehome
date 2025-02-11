@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Api\WoofApi;
 use App\Models\Dog;
 use App\Models\Name;
+use Illuminate\Database\Eloquent\Collection;
 
 class WoofService
 {
@@ -15,7 +16,7 @@ class WoofService
     }
 
 
-    public function intake(): int   
+    public function intake(): int
     {
         $number = rand(-10, 3);
         if ($number > 0) {
@@ -39,7 +40,7 @@ class WoofService
         ]);
     }
 
-    public function onDeck(): array
+    public function onDeck(): Collection
     {
         return Dog::where('state', 'ON-DECK')
             ->orderBy('created_at', 'DESC')
