@@ -1,0 +1,21 @@
+body {
+    background-color: #999999;
+}
+
+.content {
+    background-color: white;
+    width: 100%;
+}
+
+#dogsRegistered {
+
+
+}
+
+#dogsWaiting {
+
+}
+
+.center {
+    text-align: center;
+}
