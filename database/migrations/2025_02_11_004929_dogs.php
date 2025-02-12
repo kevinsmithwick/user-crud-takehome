@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->string('breed')->nullable();
             $table->string('age')->nullable();
-            $table->string('sex')->nullable();
+            $table->enum('sex', Dog::SEXES)->nullable();
             $table->enum('state', Dog::STATES)->default('ON-DECK');
             $table->enum('temperament', Dog::TEMPERAMENT)->nullable()->default(null);
             $table->enum('cuteness', Dog::CUTENESS)->nullable()->default(null);

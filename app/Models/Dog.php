@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dog extends Model
 {
-    const STATES = ['ON-DECK', 'PENDING', 'ADOPTED', 'EUTHANIZED'];
+
+    const SEXES = ["I cannot tell", "Male", "Female"];
+    const STATES = ['ON-DECK', 'REGISTERED', 'ADOPTED', 'EUTHANIZED'];
     const TEMPERAMENT = ['aggressive', 'average', 'dosile'];
     const CUTENESS = ['ugly', 'average', 'adorable'];
     const SIZE = ['ity-bity', 'small', 'medium', 'large', 'monster'];
@@ -23,5 +25,6 @@ class Dog extends Model
         'adoption_date',
         'euthanized_date'
     ];
+
 
 }

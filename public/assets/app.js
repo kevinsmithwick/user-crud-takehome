@@ -1,6 +1,6 @@
 $(document).ready(function () {
     hideSpinner();
-//    loadRegistered();
+    loadRegistered();
     loadOnDeck();
     setTimeout("intake()", seconds(5));
 });
@@ -22,17 +22,14 @@ function hideSpinner() {
 
 function loadRegistered() {
     showSpinner();
-
     const url = '/registered/'
     $.ajax({
         type: 'GET',
         url: url,
-
         success: function (data) {
-            $('#dogsWaiting').text("dog is loaded")
-            hideSpinner()
+            $('#dogsRegistered').html(data);
+            hideSpinner();
         }
-
     });
 }
 
@@ -88,6 +85,19 @@ function confirmText(name) {
 
 }
 
+function adopt(id, name){
+    alert("Gotta Love Me: " + name);
+    const url = '/adopt/' + id;
+    showSpinner()
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function (data) {
+            hideSpinner();
+            loadRegistered();
+        }
+    });
+}
 function euthanize(id, name) {
     if (confirm(confirmText(name))) {
         const url = '/euthanize/' + id;
@@ -98,6 +108,7 @@ function euthanize(id, name) {
             success: function (data) {
                 hideSpinner();
                 loadOnDeck();
+                loadRegistered();
             }
         });
     }
@@ -110,6 +121,7 @@ function euthanize(id, name) {
 var modalWindowCommand = '';
 
 function modelWindowShow(command, args) {
+    modalWindowCommand = command;
     var url = '';
     switch (command) {
         case 'on-board':
@@ -133,8 +145,70 @@ function modelWindowShow(command, args) {
     });
 }
 
-function modelWindowSave() {
+function objectifyForm(formId) {
+    var serializedData = $('#' + formId).serialize();
+    let urlParams = new URLSearchParams(serializedData); // get interface / iterator
+    let unserializedData = {}; // prepare result object
+    for (let [key, value] of urlParams) { // get pair > extract it to key/value
+        unserializedData[key] = value;
+    }
 
+    return unserializedData;
+}
+
+function validateOnBoard(form) {
+    errors = [];
+    if (form.breed.trim() === '') {
+        errors.push("Breed is required");
+    }
+    if (form.sex.trim() === '') {
+        errors.push("Sex is required");
+    }
+    if (form.size.trim() === '') {
+        errors.push("Size is required");
+    }
+    if (form.temperament.trim() === '') {
+        errors.push("Temperament is required");
+    }
+    if (form.cuteness.trim() === '') {
+        errors.push("Cuteness is required");
+    }
+    if (errors.length > 0) {
+        alert(errors.join("\n"));
+        return false;
+    }
+    return true;
+}
+
+function onBoardSubmit() {
+
+    var form = objectifyForm('onboardForm')
+    if (validateOnBoard(form)) {
+        showSpinner();
+        var url = '/register/' + form.id
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: form,
+            success: function (data) {
+                hideSpinner()
+                $('#modelWindow').modal('hide');
+                alert("Dog onboarded");
+                loadRegistered();
+                loadOnDeck();
+            }
+        });
+    }
+}
+
+function modelWindowSave() {
+    switch (modalWindowCommand) {
+        case 'on-board':
+            onBoardSubmit();
+            break;
+        default:
+            alert("I don't know what to do");
+    }
 }
 
 /*************************************************************************/
