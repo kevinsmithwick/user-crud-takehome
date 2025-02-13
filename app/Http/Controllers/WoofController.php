@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dog;
 use App\Services\WoofService;
+use Illuminate\Http\Request;
 
 class WoofController extends Controller
 {
@@ -30,8 +32,30 @@ class WoofController extends Controller
         app()->make(WoofService::class)->euthanize($id);
     }
 
-    public function onBoardForm($id){
-        $dog = app()->make(WoofService::class)->getDog($id);
-        return view('partials.onboard', ['dog' => $dog]);
+    public function adopt($id)
+    {
+        app()->make(WoofService::class)->adopt($id);
+    }
+
+    public function onBoardForm($id)
+    {
+        $data = [
+            'dog' => app()->make(WoofService::class)->getDog($id),
+            'sexes' => Dog::SEXES,
+            'temperaments' => Dog::TEMPERAMENT,
+            'cutenesses' => Dog::CUTENESS,
+            'sizes' => Dog::SIZE,
+        ];
+        return view('partials.onboard', $data);
+    }
+
+    public function registerDog(Request $request, $dogId){
+        app()->make(WoofService::class)->registerDog($dogId, $request->all());
+    }
+    public function registered()
+    {
+        $data = ['dogs' => app()->make(WoofService::class)->registered()];
+        return view('partials.registered', $data);
+
     }
 }

@@ -26,7 +26,7 @@
                             </button>
                             <button
                                 class="btn btn-sm btn-primary"
-onclick="modelWindowShow('on-board', {{ $dog->id }})"
+                                onclick="modelWindowShow('on-board', {{ $dog->id }})"
                             >On-Board
                             </button>
 

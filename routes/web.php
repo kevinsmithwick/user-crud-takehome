@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [WoofController::class, 'index']);
-Route::get('/registered', [WoofController::class, 'registeredInShelter']);
+Route::get('/registered', [WoofController::class, 'registered']);
 Route::get('/on-deck', [WoofController::class, 'onDeck']);
 Route::get('/intake', [WoofController::class, 'intake']);
 Route::get('/euthanize/{id}', [WoofController::class, 'euthanize']);
+Route::get('/adopt/{id}', [WoofController::class, 'adopt']);
 Route::get('/on-board/{id}', [WoofController::class, 'onBoardForm']);
-
+Route::post('/register/{id}', [WoofController::class, 'registerDog']);
